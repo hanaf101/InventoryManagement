@@ -11,6 +11,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import lombok.Getter;
@@ -38,10 +40,12 @@ public class Invoice {
 	@Basic(optional = false)
 	private int invoiceId;
 
-	@Id
-	@Column(name = "customer_id")
-	private int customerId;
 
+    @ManyToOne
+    @JoinColumn(name = "customer_id")
+    private Customer customer;
+    
+    
 	@Column(name = "order_date")
 	private Date orderDate;
 

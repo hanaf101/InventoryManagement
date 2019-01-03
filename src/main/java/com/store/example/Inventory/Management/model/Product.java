@@ -53,5 +53,4 @@ public class Product {
     @JoinColumn(name = "category_id", referencedColumnName = "product_category")
     private List<Product> Products;
 
-
 }

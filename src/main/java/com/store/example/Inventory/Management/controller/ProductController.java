@@ -16,6 +16,7 @@ import com.store.example.Inventory.Management.dto.ProductEntry;
 import com.store.example.Inventory.Management.dto.StatusResponse;
 import com.store.example.Inventory.Management.model.ProductCategory;
 import com.store.example.Inventory.Management.service.ProductService;
+import com.store.example.Inventory.Management.utils.ServiceUtils;
 
 public class ProductController {
 
@@ -67,6 +68,15 @@ public class ProductController {
 		return new ResponseEntity<>(statusResponse, HttpStatus.OK);
 	}
 	
+	@GetMapping(value = "/products")
+	public ResponseEntity<StatusResponse> getProducts(@RequestParam(value = "date") Date date) {
+		StatusResponse statusResponse = new StatusResponse();
+		statusResponse.setStatus("SUCCESS");
+		statusResponse.setDescription(ServiceUtils.getStringfromObject(productService.getAllProducts()));
+		return new ResponseEntity<>(statusResponse, HttpStatus.OK);
+	}
+	
+	
 	/**
 	 * To get summary of sales for a paticular date
 	 * @param date
@@ -74,7 +84,7 @@ public class ProductController {
 	 */
 
 	@GetMapping(value = "/getSummary")
-	public ResponseEntity<StatusResponse> triggerJob(@RequestParam(value = "date") Date date) {
+	public ResponseEntity<StatusResponse> getSummary(@RequestParam(value = "date") Date date) {
 		StatusResponse statusResponse;
 		statusResponse = productService.getSummary(date);
 		return new ResponseEntity<>(statusResponse, HttpStatus.OK);

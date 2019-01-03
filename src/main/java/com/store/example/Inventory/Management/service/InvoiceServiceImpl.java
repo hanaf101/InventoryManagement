@@ -9,9 +9,11 @@ import com.store.example.Inventory.Management.dto.DailySummary;
 import com.store.example.Inventory.Management.dto.InvoiceEntry;
 import com.store.example.Inventory.Management.dto.InvoiceItem;
 import com.store.example.Inventory.Management.dto.StatusResponse;
+import com.store.example.Inventory.Management.model.Customer;
 import com.store.example.Inventory.Management.model.Invoice;
 import com.store.example.Inventory.Management.model.InvoiceLineItem;
 import com.store.example.Inventory.Management.model.Product;
+import com.store.example.Inventory.Management.repository.CustomerRepository;
 import com.store.example.Inventory.Management.repository.InvoiceLineItemRepository;
 import com.store.example.Inventory.Management.repository.InvoiceRepository;
 import com.store.example.Inventory.Management.repository.ProductRepository;
@@ -30,6 +32,9 @@ public class InvoiceServiceImpl  implements InvoiceService {
 	
 	@Autowired
 	ProductRepository productRepository;
+	
+	@Autowired
+	CustomerRepository customerRepository;
 	
 	
 
@@ -56,13 +61,13 @@ public class InvoiceServiceImpl  implements InvoiceService {
 		StatusResponse statusResponse = new StatusResponse();
 		
 		Invoice invoice =  new Invoice();
-		invoice.setCustomerId(invoiceEntry.getCustomerId());
+		Customer customer = customerRepository.findById(invoiceEntry.getCustomerId()).get();
 		invoice.setOrderDate(new java.sql.Date(Calendar.getInstance().getTime().getTime()));
 		invoice.setRegister(invoiceEntry.getRegister());
 		Invoice savedInvoice = invoiceRepository.save(invoice);
 		for(InvoiceItem invoiceItem : invoiceEntry.getLineItems()) {
 			InvoiceLineItem lineItem = new InvoiceLineItem();
-			lineItem.setInvoiceNumber(savedInvoice.getInvoiceId());
+//			lineItem.setInvoiceNumber(savedInvoice.getInvoiceId());
 			lineItem.setProductId(invoiceItem.getProductId());
 			
 			Product product = productService.getProduct(invoiceItem.getProductId());
